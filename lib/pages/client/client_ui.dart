@@ -32,7 +32,7 @@ class _ClientUiState extends State<ClientUi> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<ClientBloc>(
-      create: (context) => ClientBloc(context.read<Repository>())..add(FetchClient(client: widget._client)),
+      create: (context) => ClientBloc(context.read<Repository>())..add(FetchAssets(client: widget._client)),
       child: Builder(
           builder: (context) => BlocBuilder<ClientBloc, ClientState>(
             builder: (context, state) {
@@ -95,7 +95,7 @@ class _ClientUiState extends State<ClientUi> {
                                 InfoCard(
                                   topText: Text(investment.key.name,),
                                   bottomText: Text("${investment.value.toString()}%", style: TextStyle(fontWeight: FontWeight.bold),),
-                                  image: context.read<ImageRepository>().getImage(widget._client.imageUri),
+                                  image: context.read<ImageRepository>().getImage(investment.key.imageUri),
                                   isGrey: _touchedIndex != null && _touchedIndex != -1 && index != _touchedIndex,
                                   onTapped: () {
                                     setState(() {

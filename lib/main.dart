@@ -6,6 +6,7 @@ import 'package:investmentapp/pages/asset/asset_ui.dart';
 import 'package:investmentapp/pages/client/client_ui.dart';
 import 'package:investmentapp/pages/home/home_ui.dart';
 import 'package:investmentapp/repository/image_repository.dart';
+import 'package:investmentapp/repository/models/asset.dart';
 import 'package:investmentapp/repository/models/client.dart';
 import 'package:investmentapp/repository/repository.dart';
 import 'package:provider/provider.dart';
@@ -30,7 +31,7 @@ class InvestmentApp extends StatelessWidget {
           ),
           GoRoute(
             path: 'asset',
-            builder: (context, state) => const AssetUi(),
+            builder: (context, state) => AssetUi(state.extra as Asset),
           ),
         ]
       )

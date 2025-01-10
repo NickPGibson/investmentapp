@@ -4,11 +4,11 @@ sealed class ClientEvent extends Equatable {
   const ClientEvent();
 }
 
-class FetchClient extends ClientEvent {
+class FetchAssets extends ClientEvent {
 
   final Client client;
 
-  const FetchClient({required this.client});
+  const FetchAssets({required this.client});
 
   @override
   List<Object> get props => [client];
