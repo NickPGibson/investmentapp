@@ -9,7 +9,8 @@ class InfoCard extends StatelessWidget {
     required this.topText,
     required this.bottomText,
     required this.image,
-    this.isGrey = false
+    this.isGrey = false,
+    this.showArrow = true
   });
 
   final void Function()? onTapped;
@@ -17,10 +18,12 @@ class InfoCard extends StatelessWidget {
   final Text bottomText;
   final ImageProvider image;
   final bool isGrey;
+  final bool showArrow;
 
   @override
   Widget build(BuildContext context) => RoundedCard(
     onTapped: onTapped,
+    isGrey: isGrey,
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -39,7 +42,7 @@ class InfoCard extends StatelessWidget {
             )),
           ],
         )),
-        if (onTapped != null) const Icon(Icons.arrow_forward_ios_outlined)
+        if (onTapped != null && showArrow) const Icon(Icons.arrow_forward_ios_outlined)
       ],
     )
   );
