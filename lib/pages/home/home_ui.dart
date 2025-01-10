@@ -5,6 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:investmentapp/pages/assets/assets_ui.dart';
 import 'package:investmentapp/pages/clients/clients_ui.dart';
 import 'package:investmentapp/pages/home/home_bloc.dart';
+import 'package:investmentapp/widgets/investment_scaffold.dart';
+
 /*
 class HomeUi extends StatefulWidget {
   const HomeUi({super.key});
@@ -83,29 +85,40 @@ class _HomeUiState extends State<HomeUi> {
       appBar: AppBar(
         title: const Text('Home'),
       ),
-      body: Center(
-        child: _pages[_index],
+      body: SafeArea(
+        child: Padding(
+          padding: EdgeInsets.all(10),
+          child: Center(
+            child: _pages[_index],
+          ),
+        )
       ),
-      bottomNavigationBar: NavigationBar(
-        onDestinationSelected: (int newIndex) {
-          setState(() {
-            _index = newIndex;
-          });
-        },
-        destinations: [
-          NavigationDestination(
-            selectedIcon: Icon(Icons.people),
-            icon: Icon(Icons.people_outline),
-            label: 'Clients',
-          ),
-          NavigationDestination(
-            selectedIcon: Icon(Icons.assessment),
-            icon: Icon(Icons.assessment_rounded),
-            label: 'Assets',
-          ),
-        ],
-        indicatorColor: Colors.amber,
-        selectedIndex: _index,
+      bottomNavigationBar: ClipRRect(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(20),
+          topRight: Radius.circular(20),
+        ),
+        child: NavigationBar(
+          onDestinationSelected: (int newIndex) {
+            setState(() {
+              _index = newIndex;
+            });
+          },
+          destinations: [
+            NavigationDestination(
+              selectedIcon: Icon(Icons.people),
+              icon: Icon(Icons.people_outline),
+              label: 'Clients',
+            ),
+            NavigationDestination(
+              selectedIcon: Icon(Icons.assessment),
+              icon: Icon(Icons.assessment_rounded),
+              label: 'Assets',
+            ),
+          ],
+          //indicatorColor: Colors.amber,
+          selectedIndex: _index,
+        ),
       ),
     );
   }

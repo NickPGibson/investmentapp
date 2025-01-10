@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:investmentapp/repository/models/asset.dart';
 import 'package:investmentapp/repository/models/client.dart';
 import 'package:investmentapp/repository/repository.dart';
+import 'package:investmentapp/utils/utils.dart';
 
 part 'client_event.dart';
 part 'client_state.dart';
@@ -16,7 +17,8 @@ class ClientBloc extends Bloc<ClientEvent, ClientState> {
       switch (event) {
         case FetchClient():
           emit(ClientLoading());
-          final assets = await _repository.getAssetsOf(clientUuid: event.client.uuid);
+          final assets = (await _repository.getAssetsOf(clientUuid: event.client.uuid));
+            //  .map((k,v) => MapEntry(k, toSterling(v)));
           emit(ClientReady(assets: assets));
       }
     });

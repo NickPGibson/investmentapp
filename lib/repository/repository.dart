@@ -4,14 +4,13 @@ import 'package:decimal/decimal.dart';
 import 'package:investmentapp/repository/models/asset.dart';
 import 'package:investmentapp/repository/models/holding.dart';
 import 'package:investmentapp/repository/models/client.dart';
-import 'package:uuid/uuid.dart';
 
 class Repository {
 
   final List<Client> _clients = [
-    Client(uuid: "1", name: 'Mr Daniel Dreiberg', portfolioValue: Decimal.parse('110000')),
-    Client(uuid: "2", name: 'Ms Laurel Juspeczyk', portfolioValue: Decimal.parse('245000')),
-    Client(uuid: "3", name: 'Dr Jonathan Osterman', portfolioValue: Decimal.parse('65000')),
+    Client(uuid: "1", name: 'Mr Daniel Dreiberg', portfolioValue: Decimal.parse('110000'), imageUri: 'assets/images/DanielDreiberg.jpg'),
+    Client(uuid: "2", name: 'Ms Laurel Juspeczyk', portfolioValue: Decimal.parse('245000'), imageUri: 'assets/images/LaurelJuspeczyk.jpg'),
+    Client(uuid: "3", name: 'Dr Jonathan Osterman', portfolioValue: Decimal.parse('65000'), imageUri: 'assets/images/JonathanOsterman.jpg'),
   ];
 
   final List<Asset> _assets = [
