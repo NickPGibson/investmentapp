@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:investmentapp/pages/clients/clients_bloc.dart';
 import 'package:investmentapp/repository/image_repository.dart';
 import 'package:investmentapp/repository/repository.dart';
+import 'package:investmentapp/utils/utils.dart';
 import 'package:investmentapp/widgets/info_card.dart';
 
 class ClientsUi extends StatelessWidget {
@@ -32,7 +33,7 @@ class ClientsUi extends StatelessWidget {
                     return InfoCard(
                       image: context.read<ImageRepository>().getImage(client.imageUri),
                       topText: Text(client.name),
-                      bottomText: Text(client.portfolioValue.toString()),
+                      bottomText: Text(toSterling(client.portfolioValue)),
                       onTapped: () => GoRouter.of(context).go('/client', extra: client)
                     );
                   },
