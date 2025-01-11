@@ -47,9 +47,9 @@ class _HomeUiState extends State<HomeUi> {
                     title: Text(_titles[_index]),
                   ),
                   body: SafeArea(
-                      child: InvestNestPadding(
-                        child: _pages[_index],
-                      )
+                    child: InvestNestPadding(
+                      child: _pages[_index],
+                    )
                   ),
                   bottomNavigationBar: ClipRRect(
                     borderRadius: BorderRadius.only(

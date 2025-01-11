@@ -73,11 +73,7 @@ class _ClientUiState extends State<ClientUi> {
                                           if (event is FlTapUpEvent) {
                                             final index = response?.touchedSection?.touchedSectionIndex;
                                             setState(() {
-                                              if (index == _touchedIndex) {
-                                                _touchedIndex = null;
-                                              } else {
-                                                _touchedIndex = index;
-                                              }
+                                              _setTouchedIndex(index);
                                             });
                                           }
                                         }
@@ -97,11 +93,7 @@ class _ClientUiState extends State<ClientUi> {
                                   isGrey: _touchedIndex != null && _touchedIndex != -1 && index != _touchedIndex,
                                   onTapped: () {
                                     setState(() {
-                                      if (index == _touchedIndex) {
-                                        _touchedIndex = null;
-                                      } else {
-                                        _touchedIndex = index;
-                                      }
+                                      _setTouchedIndex(index);
                                     });
                                   },
                                   showArrow: false,
@@ -117,6 +109,14 @@ class _ClientUiState extends State<ClientUi> {
           )
       ),
     );
+  }
+
+  void _setTouchedIndex(int? index) {
+    if (index == _touchedIndex) {
+      _touchedIndex = null;
+    } else {
+      _touchedIndex = index;
+    }
   }
 
 
