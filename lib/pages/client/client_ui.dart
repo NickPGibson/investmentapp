@@ -58,8 +58,7 @@ class _ClientUiState extends State<ClientUi> {
                                   children: [
                                     CircleAvatar(backgroundImage: context.read<ImageRepository>().getImage(widget._client.imageUri), radius: 60),
                                     Text('Portfolio Value: ${toSterling(widget._client.portfolioValue)}'),
-                                    Text('Risk Strategy: Low'),
-                                    // Text('Investment Strategy: ${_client.investmentStrategy}'),
+                                    Text('Risk Strategy: ${widget._client.riskStrategy}'),
                                   ],
                                 )
                               ),

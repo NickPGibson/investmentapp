@@ -8,8 +8,9 @@ class Client extends Equatable {
   final String name;
   final Decimal portfolioValue;
   final String imageUri;
+  final String riskStrategy;
 
-  const Client({required this.uuid, required this.name, required this.portfolioValue, required this.imageUri,/*required this.portfolio*/});
+  const Client({required this.uuid, required this.name, required this.portfolioValue, required this.imageUri, required this.riskStrategy});
 
   Map<String, Object> toMap() {
     return {
@@ -17,6 +18,7 @@ class Client extends Equatable {
       'name': name,
       'portfolioValue': portfolioValue.toString(),
       'imageUri': imageUri,
+      'risk_strategy': riskStrategy
     };
   }
 
@@ -24,8 +26,9 @@ class Client extends Equatable {
     uuid = map['uuid'] as String,
     name = map['name'] as String,
     portfolioValue = Decimal.parse(map['portfolioValue'] as String),
-    imageUri = map['imageUri'] as String;
+    imageUri = map['imageUri'] as String,
+    riskStrategy = map['risk_strategy'] as String;
 
   @override
-  List<Object?> get props => [uuid, name, portfolioValue, imageUri];
+  List<Object?> get props => [uuid, name, portfolioValue, imageUri, riskStrategy];
 }

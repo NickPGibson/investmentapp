@@ -46,7 +46,7 @@ class AssetUi extends StatelessWidget {
                             children: [
                               CircleAvatar(backgroundImage: context.read<ImageRepository>().getImage(_asset.imageUri), radius: 60),
                               Text(_asset.name),
-                              Text('Risk Level: Low'),
+                              Text('Risk Level: ${_asset.riskRating}'),
                             ],
                           )
                         ),

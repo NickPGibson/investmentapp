@@ -35,14 +35,16 @@ interface class Repository {
         uuid TEXT PRIMARY KEY,
         name TEXT,
         portfolioValue TEXT,
-        imageUri TEXT
+        imageUri TEXT,
+        risk_strategy TEXT
       )
     ''');
     await db.execute('''
       CREATE TABLE assets(
         isin TEXT PRIMARY KEY,
         name TEXT,
-        imageUri TEXT
+        imageUri TEXT,
+        risk_rating TEXT
       )
     ''');
     await db.execute('''
@@ -109,25 +111,27 @@ interface class Repository {
 
 
   final List<Client> _clients = [
-    Client(uuid: "1", name: 'Mr Daniel Dreiberg', portfolioValue: Decimal.parse('110000'), imageUri: 'assets/images/DanielDreiberg.jpg'),
-    Client(uuid: "2", name: 'Ms Laurel Juspeczyk', portfolioValue: Decimal.parse('245000'), imageUri: 'assets/images/LaurelJuspeczyk.jpg'),
-    Client(uuid: "3", name: 'Dr Jonathan Osterman', portfolioValue: Decimal.parse('65000'), imageUri: 'assets/images/JonathanOsterman.jpg'),
+    Client(uuid: "1", name: 'Mr Daniel Dreiberg', portfolioValue: Decimal.parse('110000'), imageUri: 'assets/images/DanielDreiberg.jpg', riskStrategy: 'Balanced'),
+    Client(uuid: "2", name: 'Ms Laurel Juspeczyk', portfolioValue: Decimal.parse('245000'), imageUri: 'assets/images/LaurelJuspeczyk.jpg', riskStrategy: 'Growth'),
+    Client(uuid: "3", name: 'Dr Jonathan Osterman', portfolioValue: Decimal.parse('65000'), imageUri: 'assets/images/JonathanOsterman.jpg', riskStrategy: 'Low'),
   ];
 
   final List<Asset> _assets = [
-    Asset(isin: 'IE00B52L4369', name: "BlackRock Institutional Cash Series Sterling Liquidity Agency Inc", imageUri: 'assets/images/blackrock.png'),
-    Asset(isin: 'GB00BQ1YHQ70', name: "Threadneedle UK Property Authorised Investment Net GBP 1 Acc", imageUri: 'assets/images/threadneedle.png'),
-    Asset(isin: 'GB00BPN5P238', name: "Vanguard US Equity Index Institutional Plus GBP Accumulation", imageUri: 'assets/images/vanguard.png'),
-    Asset(isin: 'GB00BG0QP828', name: "Legal & General Japan Index Trust C Class Accumulation", imageUri: 'assets/images/legalandgeneral.png'),
-    Asset(isin: 'IE00B1S74Q32', name: "Vanguard FTSE U.K. All Share Index Unit Trust Accumulation", imageUri: 'assets/images/vanguard.png'),
+    Asset(isin: 'IE00B52L4369', name: "BlackRock Institutional Cash Series Sterling Liquidity Agency Inc", imageUri: 'assets/images/blackrock.png', riskRating: "Low"),
+    Asset(isin: 'GB00BQ1YHQ70', name: "Threadneedle UK Property Authorised Investment Net GBP 1 Acc", imageUri: 'assets/images/threadneedle.png', riskRating: "Low"),
+    Asset(isin: 'GB00BPN5P238', name: "Vanguard US Equity Index Institutional Plus GBP Accumulation", imageUri: 'assets/images/vanguard.png', riskRating: "Medium"),
+    Asset(isin: 'GB00BG0QP828', name: "Legal & General Japan Index Trust C Class Accumulation", imageUri: 'assets/images/legalandgeneral.png', riskRating: "Medium"),
+    Asset(isin: 'IE00B1S74Q32', name: "Vanguard FTSE U.K. All Share Index Unit Trust Accumulation", imageUri: 'assets/images/vanguard.png', riskRating: "Medium"),
   ];
 
   final List<Holding> _holdings = [
     Holding(clientUuid: '1', assetIsin: 'IE00B52L4369', quantity: 20),
     Holding(clientUuid: '1', assetIsin: 'GB00BQ1YHQ70', quantity: 20),
     Holding(clientUuid: '1', assetIsin: 'GB00BPN5P238', quantity: 60),
+
     Holding(clientUuid: '2', assetIsin: 'GB00BQ1YHQ70', quantity: 40),
     Holding(clientUuid: '2', assetIsin: 'GB00BG0QP828', quantity: 60),
+
     Holding(clientUuid: '3', assetIsin: 'IE00B1S74Q32', quantity: 10),
     Holding(clientUuid: '3', assetIsin: 'GB00BPN5P238', quantity: 10),
     Holding(clientUuid: '3', assetIsin: 'IE00B52L4369', quantity: 30),
