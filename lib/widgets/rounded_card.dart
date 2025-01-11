@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:investmentapp/widgets/invest_nest_padding.dart';
 import 'package:investmentapp/widgets/tappable.dart';
 
 class RoundedCard extends StatelessWidget {
@@ -19,8 +20,7 @@ class RoundedCard extends StatelessWidget {
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(12)),
         ),
-        child: Padding(
-          padding: const EdgeInsets.all(10),
+        child: InvestNestPadding(
           child: child,
         )
       )

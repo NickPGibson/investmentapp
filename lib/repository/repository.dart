@@ -16,7 +16,7 @@ class Repository {
   final List<Asset> _assets = [
     Asset(isin: 'IE00B52L4369', name: "BlackRock Institutional Cash Series Sterling Liquidity Agency Inc", imageUri: 'assets/images/blackrock.png'),
     Asset(isin: 'GB00BQ1YHQ70', name: "Threadneedle UK Property Authorised Investment Net GBP 1 Acc", imageUri: 'assets/images/threadneedle.png'),
-    Asset(isin: 'GB00BPN5P238', name: "Vanguard US Equity Index Institutional Plus GBP Accumulation", imageUri: 'assets/images/vanguard 2.png'),
+    Asset(isin: 'GB00BPN5P238', name: "Vanguard US Equity Index Institutional Plus GBP Accumulation", imageUri: 'assets/images/vanguard.png'),
     Asset(isin: 'GB00BG0QP828', name: "Legal & General Japan Index Trust C Class Accumulation", imageUri: 'assets/images/legalandgeneral.png'),
     Asset(isin: 'IE00B1S74Q32', name: "Vanguard FTSE U.K. All Share Index Unit Trust Accumulation", imageUri: 'assets/images/vanguard.png'),
   ];

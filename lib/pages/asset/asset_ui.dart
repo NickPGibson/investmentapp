@@ -10,6 +10,7 @@ import 'package:investmentapp/repository/models/asset.dart';
 import 'package:investmentapp/repository/repository.dart';
 import 'package:investmentapp/widgets/heading.dart';
 import 'package:investmentapp/widgets/info_card.dart';
+import 'package:investmentapp/widgets/invest_nest_padding.dart';
 import 'package:investmentapp/widgets/rounded_card.dart';
 
 class AssetUi extends StatelessWidget {
@@ -35,29 +36,31 @@ class AssetUi extends StatelessWidget {
                   appBar: AppBar(
                     title: const Text('Asset'),
                   ),
-                  body: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: <Widget>[
-                      RoundedCard(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            CircleAvatar(backgroundImage: context.read<ImageRepository>().getImage(_asset.imageUri), radius: 60),
-                            Text(_asset.name),
-                            Text('Risk Level: Low'),
-                          ],
-                        )
-                      ),
-                      Heading(text: 'Clients'),
-                      for (final entry in state.clients.entries)
-                        InfoCard(
-                          topText: Text(entry.key.name),
-                          bottomText: Text("Portfolio: ${entry.value}%"),
-                          image: context.read<ImageRepository>().getImage(entry.key.imageUri),
-                          onTapped: () => GoRouter.of(context).go('/client', extra: entry.key)
+                  body: InvestNestPadding(child:
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: <Widget>[
+                        RoundedCard(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              CircleAvatar(backgroundImage: context.read<ImageRepository>().getImage(_asset.imageUri), radius: 60),
+                              Text(_asset.name),
+                              Text('Risk Level: Low'),
+                            ],
+                          )
                         ),
-                    ],
-                  ),
+                        Heading(text: 'Clients'),
+                        for (final entry in state.clients.entries)
+                          InfoCard(
+                            topText: Text(entry.key.name),
+                            bottomText: Text("Portfolio: ${entry.value}%"),
+                            image: context.read<ImageRepository>().getImage(entry.key.imageUri),
+                            onTapped: () => GoRouter.of(context).go('/client', extra: entry.key)
+                          ),
+                      ],
+                    ),
+                  )
                 );
             }
           },

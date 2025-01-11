@@ -5,7 +5,6 @@ import 'package:go_router/go_router.dart';
 import 'package:investmentapp/pages/assets/assets_bloc.dart';
 import 'package:investmentapp/repository/image_repository.dart';
 import 'package:investmentapp/repository/repository.dart';
-import 'package:investmentapp/utils/utils.dart';
 import 'package:investmentapp/widgets/info_card.dart';
 
 class AssetsUi extends StatelessWidget {
@@ -37,12 +36,7 @@ class AssetsUi extends StatelessWidget {
                     },
                   );
               }
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  const Text('Assets',),
-                ],
-              );
+
             },
           )),
     );
