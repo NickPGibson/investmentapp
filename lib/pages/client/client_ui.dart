@@ -12,6 +12,7 @@ import 'package:investmentapp/repository/repository.dart';
 import 'package:investmentapp/utils/utils.dart';
 import 'package:investmentapp/widgets/heading.dart';
 import 'package:investmentapp/widgets/info_card.dart';
+import 'package:investmentapp/widgets/invest_nest_padding.dart';
 import 'package:investmentapp/widgets/rounded_card.dart';
 
 class ClientUi extends StatefulWidget {
@@ -26,13 +27,12 @@ class ClientUi extends StatefulWidget {
 
 class _ClientUiState extends State<ClientUi> {
 
-  int? _touchedIndex = null;
-
+  int? _touchedIndex;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider<ClientBloc>(
-      create: (context) => ClientBloc(context.read<Repository>())..add(FetchClient(client: widget._client)),
+      create: (context) => ClientBloc(context.read<Repository>())..add(FetchAssets(client: widget._client)),
       child: Builder(
           builder: (context) => BlocBuilder<ClientBloc, ClientState>(
             builder: (context, state) {
@@ -48,8 +48,7 @@ class _ClientUiState extends State<ClientUi> {
                     ),
                     body: SafeArea(
                       child: SingleChildScrollView(
-                        child: Padding(
-                          padding: EdgeInsets.all(10),
+                        child: InvestNestPadding(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
@@ -95,7 +94,7 @@ class _ClientUiState extends State<ClientUi> {
                                 InfoCard(
                                   topText: Text(investment.key.name,),
                                   bottomText: Text("${investment.value.toString()}%", style: TextStyle(fontWeight: FontWeight.bold),),
-                                  image: context.read<ImageRepository>().getImage(widget._client.imageUri),
+                                  image: context.read<ImageRepository>().getImage(investment.key.imageUri),
                                   isGrey: _touchedIndex != null && _touchedIndex != -1 && index != _touchedIndex,
                                   onTapped: () {
                                     setState(() {

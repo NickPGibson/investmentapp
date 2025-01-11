@@ -14,12 +14,11 @@ class Repository {
   ];
 
   final List<Asset> _assets = [
-    Asset(assetIsin: 'IE00B52L4369', name: "BlackRock Institutional Cash Series Sterling Liquidity Agency Inc"),
-    Asset(assetIsin: 'GB00BQ1YHQ70', name: "Threadneedle UK Property Authorised Investment Net GBP 1 Acc"),
-    Asset(assetIsin: 'GB00BPN5P238', name: "Vanguard US Equity Index Institutional Plus GBP Accumulation"),
-    Asset(assetIsin: 'GB00BG0QP828', name: "Legal & General Japan Index Trust C Class Accumulation"),
-    Asset(assetIsin: 'IE00B1S74Q32', name: "Vanguard FTSE U.K. All Share Index Unit Trust Accumulation"),
-    // todo add the rest
+    Asset(isin: 'IE00B52L4369', name: "BlackRock Institutional Cash Series Sterling Liquidity Agency Inc", imageUri: 'assets/images/blackrock.png'),
+    Asset(isin: 'GB00BQ1YHQ70', name: "Threadneedle UK Property Authorised Investment Net GBP 1 Acc", imageUri: 'assets/images/threadneedle.png'),
+    Asset(isin: 'GB00BPN5P238', name: "Vanguard US Equity Index Institutional Plus GBP Accumulation", imageUri: 'assets/images/vanguard.png'),
+    Asset(isin: 'GB00BG0QP828', name: "Legal & General Japan Index Trust C Class Accumulation", imageUri: 'assets/images/legalandgeneral.png'),
+    Asset(isin: 'IE00B1S74Q32', name: "Vanguard FTSE U.K. All Share Index Unit Trust Accumulation", imageUri: 'assets/images/vanguard.png'),
   ];
 
   final List<Holding> _holdings = [
@@ -29,7 +28,10 @@ class Repository {
     Holding(clientUuid: '2', assetUuid: 'GB00BQ1YHQ70', quantity: 40),
     Holding(clientUuid: '2', assetUuid: 'GB00BG0QP828', quantity: 60),
     Holding(clientUuid: '3', assetUuid: 'IE00B1S74Q32', quantity: 10),
-    // todo add the rest
+    Holding(clientUuid: '3', assetUuid: 'GB00BPN5P238', quantity: 10),
+    Holding(clientUuid: '3', assetUuid: 'IE00B52L4369', quantity: 30),
+    Holding(clientUuid: '3', assetUuid: 'GB00BQ1YHQ70', quantity: 30),
+    Holding(clientUuid: '3', assetUuid: 'GB00BG0QP828', quantity: 20),
   ];
 
 
@@ -44,13 +46,20 @@ class Repository {
   Future<List<Asset>> getPortfolio({required String clientId}) {
 
   }
-*/
+
   Future<Client> getClient({required String clientUuid}) async { // not needed?
     return _clients.firstWhere((element) => element.uuid == clientUuid);
   }
 
+ */
+
+  Future<Map<Client, int>> getClientsOf({required String assetUuid}) async {
+    final assetHoldings = _holdings.where((element) => element.assetUuid == assetUuid);
+    return { for (var holding in assetHoldings) _clients.firstWhere((element) => element.uuid == holding.clientUuid) : holding.quantity };
+  }
+
   Future<Map<Asset, int>> getAssetsOf({required String clientUuid}) async {
     final clientHoldings = _holdings.where((element) => element.clientUuid == clientUuid);
-    return { for (var holding in clientHoldings) _assets.firstWhere((element) => element.assetIsin == holding.assetUuid) : holding.quantity };
+    return { for (var holding in clientHoldings) _assets.firstWhere((element) => element.isin == holding.assetUuid) : holding.quantity };
   }
 }

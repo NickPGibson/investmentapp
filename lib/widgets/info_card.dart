@@ -7,7 +7,7 @@ class InfoCard extends StatelessWidget {
   const InfoCard({super.key,
     this.onTapped,
     required this.topText,
-    required this.bottomText,
+    this.bottomText,
     required this.image,
     this.isGrey = false,
     this.showArrow = true
@@ -15,7 +15,7 @@ class InfoCard extends StatelessWidget {
 
   final void Function()? onTapped;
   final Text topText;
-  final Text bottomText;
+  final Text? bottomText;
   final ImageProvider image;
   final bool isGrey;
   final bool showArrow;
@@ -36,7 +36,7 @@ class InfoCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   topText,
-                  bottomText
+                  if (bottomText != null) bottomText!
                 ]
               ),
             )),
