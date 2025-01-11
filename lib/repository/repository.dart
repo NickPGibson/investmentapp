@@ -50,7 +50,9 @@ interface class Repository {
         clientUuid TEXT,
         assetIsin TEXT,
         quantity INTEGER,
-        PRIMARY KEY (clientUuid, assetIsin)
+        PRIMARY KEY (clientUuid, assetIsin),
+        FOREIGN KEY (clientUuid) REFERENCES clients(uuid),
+        FOREIGN KEY (assetIsin) REFERENCES assets(isin)
       )
     ''');
 
