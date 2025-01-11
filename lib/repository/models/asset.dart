@@ -9,6 +9,19 @@ class Asset extends Equatable {
 
   const Asset({required this.isin, required this.name, required this.imageUri});
 
+  Map<String, Object?> toMap() {
+    return {
+      'isin': isin,
+      'name': name,
+      'imageUri': imageUri,
+    };
+  }
+
+  Asset.fromMap(Map<String, Object?> map) :
+    isin = map['isin'] as String,
+    name = map['name'] as String,
+    imageUri = map['imageUri'] as String;
+
   @override
   List<Object?> get props => [isin, name, imageUri];
 }

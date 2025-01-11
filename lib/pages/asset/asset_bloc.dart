@@ -15,7 +15,7 @@ class AssetBloc extends Bloc<AssetEvent, AssetState> {
       switch(event) {
         case FetchClients():
           emit(AssetLoading());
-          final assets = await _repository.getClientsOf(assetUuid: event.assetIsin);
+          final assets = await _repository.getClientsOf(assetIsin: event.assetIsin);
           emit(AssetLoaded(assets));
       }
     });

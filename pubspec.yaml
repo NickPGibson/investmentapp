@@ -25,6 +25,8 @@ dependencies:
   fl_chart: ^0.70.1
   intl: ^0.20.1
   collection: ^1.19.0
+  sqflite: ^2.4.1
+  path: ^1.9.0
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
