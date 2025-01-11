@@ -1,11 +1,13 @@
 
 
 import 'package:decimal/decimal.dart';
+import 'package:flutter/foundation.dart';
 import 'package:investmentapp/repository/models/asset.dart';
 import 'package:investmentapp/repository/models/holding.dart';
 import 'package:investmentapp/repository/models/client.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:sqflite_common_ffi_web/sqflite_ffi_web.dart';
 
 interface class Repository {
 
@@ -16,6 +18,10 @@ interface class Repository {
   static const _holdingsTable = 'holdings';
 
   Future<void> initialise() async {
+    if (kIsWeb) {
+      databaseFactory = databaseFactoryFfiWeb;
+    }
+
     _db = await openDatabase(
       join(await getDatabasesPath(), 'invest_database.db'),
       onOpen: (db) async {
