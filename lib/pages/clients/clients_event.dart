@@ -4,7 +4,7 @@ sealed class ClientsEvent extends Equatable {
   const ClientsEvent();
 }
 
-class FetchClients extends ClientsEvent {
+class FetchAllClients extends ClientsEvent {
   @override
   List<Object> get props => [];
 }

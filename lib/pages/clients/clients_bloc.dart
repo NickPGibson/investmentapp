@@ -13,7 +13,7 @@ class ClientsBloc extends Bloc<ClientsEvent, ClientsState> {
   ClientsBloc(this._repository) : super(ClientsInitial()) {
     on<ClientsEvent>((event, emit) async {
       switch(event) {
-        case FetchClients():
+        case FetchAllClients():
           emit(ClientsLoading());
           final clients = await _repository.getAllClients();
           emit(ClientsLoaded(clients));

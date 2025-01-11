@@ -13,7 +13,7 @@ class AssetsBloc extends Bloc<AssetsEvent, AssetsState> {
   AssetsBloc(this._repository) : super(AssetsInitial()) {
     on<AssetsEvent>((event, emit) async {
       switch(event) {
-        case FetchAssets():
+        case FetchAllAssets():
           emit(AssetsLoading());
           final assets = await _repository.getAllAssets();
           emit(AssetsLoaded(assets));

@@ -15,7 +15,7 @@ class ClientsUi extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<ClientsBloc>(
-      create: (context) => ClientsBloc(context.read<Repository>())..add(FetchClients()),
+      create: (context) => ClientsBloc(context.read<Repository>())..add(FetchAllClients()),
       child: Builder(
         builder: (context) => BlocBuilder<ClientsBloc, ClientsState>(
           builder: (context, state) {

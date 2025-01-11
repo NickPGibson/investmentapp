@@ -16,7 +16,7 @@ class ClientBloc extends Bloc<ClientEvent, ClientState> {
       switch (event) {
         case FetchAssets():
           emit(ClientLoading());
-          final assets = (await _repository.getAssetsOf(clientUuid: event.client.uuid));
+          final assets = await _repository.getAssetsOf(clientUuid: event.client.uuid);
           emit(ClientReady(assets: assets));
       }
     });
