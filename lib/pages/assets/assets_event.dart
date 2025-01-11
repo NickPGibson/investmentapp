@@ -4,7 +4,7 @@ sealed class AssetsEvent extends Equatable {
   const AssetsEvent();
 }
 
-class FetchAssets extends AssetsEvent {
+class FetchAllAssets extends AssetsEvent {
   @override
   List<Object> get props => [];
 }

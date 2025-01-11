@@ -13,7 +13,7 @@ class AssetsUi extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<AssetsBloc>(
-      create: (context) => AssetsBloc(context.read<Repository>())..add(FetchAssets()),
+      create: (context) => AssetsBloc(context.read<Repository>())..add(FetchAllAssets()),
       child: Builder(
           builder: (context) => BlocBuilder<AssetsBloc, AssetsState>(
             builder: (context, state) {

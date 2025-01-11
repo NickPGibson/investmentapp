@@ -66,11 +66,13 @@ class _HomeUiState extends State<HomeUi> {
                         NavigationDestination(
                           selectedIcon: Icon(Icons.people),
                           icon: Icon(Icons.people_outline),
+                          key: ValueKey("ClientsKey"),
                           label: 'Clients',
                         ),
                         NavigationDestination(
                           selectedIcon: Icon(Icons.assessment),
                           icon: Icon(Icons.assessment_rounded),
+                          key: ValueKey("AssetsKey"),
                           label: 'Assets',
                         ),
                       ],

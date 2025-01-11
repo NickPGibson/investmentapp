@@ -13,8 +13,26 @@ import 'package:provider/provider.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(const InvestmentApp());
+  runApp(const InvestNestApp());
 }
+
+class InvestNestApp extends StatelessWidget {
+  const InvestNestApp({super.key});
+
+  @override
+  Widget build(BuildContext context) => MultiProvider(
+    providers: [
+      Provider<Repository>(
+        create: (context) => Repository(),
+      ),
+      Provider<ImageRepository>(
+        create: (context) => ImageRepository(),
+      ),
+    ],
+    child: InvestmentApp()
+  );
+}
+
 
 class InvestmentApp extends StatelessWidget {
   const InvestmentApp({super.key});
@@ -41,51 +59,41 @@ class InvestmentApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        Provider<Repository>(
-          create: (context) => Repository(),
-        ),
-        Provider<ImageRepository>(
-          create: (context) => ImageRepository(),
-        ),
-      ],
-      child: MaterialApp.router(
-        title: 'Investment App',
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-          useMaterial3: true,
-          fontFamily: 'Quicksand',
-          scaffoldBackgroundColor: CupertinoColors.lightBackgroundGray,
-          navigationBarTheme: NavigationBarThemeData(
-            backgroundColor: Colors.deepPurple.shade400,
-            shadowColor: Colors.transparent,
-            indicatorColor: Colors.green.shade400,
-            overlayColor: WidgetStateProperty.all(Colors.transparent),
-            iconTheme: WidgetStateProperty.all(
-              IconThemeData(
-                color: Colors.white,
-              ),
-            ),
-            labelTextStyle: WidgetStateProperty.all(
-              TextStyle(
-                color: Colors.white,
-                fontFamily: 'Quicksand',
-              ),
+    return MaterialApp.router(
+      title: 'Investment App',
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        useMaterial3: true,
+        fontFamily: 'Quicksand',
+        scaffoldBackgroundColor: CupertinoColors.lightBackgroundGray,
+        navigationBarTheme: NavigationBarThemeData(
+          backgroundColor: Colors.deepPurple.shade400,
+          shadowColor: Colors.transparent,
+          indicatorColor: Colors.green.shade400,
+          overlayColor: WidgetStateProperty.all(Colors.transparent),
+          iconTheme: WidgetStateProperty.all(
+            IconThemeData(
+              color: Colors.white,
             ),
           ),
-          appBarTheme: const AppBarTheme(
-            titleTextStyle: TextStyle(fontSize: 22, color: Colors.black, fontFamily: 'Quicksand'),
-            backgroundColor: Colors.transparent,
-            foregroundColor: Colors.black,
-            elevation: 0,
-            systemOverlayStyle: SystemUiOverlayStyle.dark,
+          labelTextStyle: WidgetStateProperty.all(
+            TextStyle(
+              color: Colors.white,
+              fontFamily: 'Quicksand',
+            ),
           ),
         ),
-        routeInformationProvider: _router.routeInformationProvider,
-        routeInformationParser: _router.routeInformationParser,
-        routerDelegate: _router.routerDelegate,
+        appBarTheme: const AppBarTheme(
+          titleTextStyle: TextStyle(fontSize: 22, color: Colors.black, fontFamily: 'Quicksand'),
+          backgroundColor: Colors.transparent,
+          foregroundColor: Colors.black,
+          elevation: 0,
+          systemOverlayStyle: SystemUiOverlayStyle.dark,
+        ),
       ),
+      routeInformationProvider: _router.routeInformationProvider,
+      routeInformationParser: _router.routeInformationParser,
+      routerDelegate: _router.routerDelegate,
     );
   }
 }
