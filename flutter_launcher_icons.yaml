@@ -10,7 +10,8 @@ flutter_launcher_icons:
 
   ios: true
   remove_alpha_channel_ios: true
-
+  macos:
+    generate: true
   web:
     generate: true
     background_color: "#hexcode"
