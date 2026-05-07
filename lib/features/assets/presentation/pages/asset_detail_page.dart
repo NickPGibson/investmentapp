@@ -55,7 +55,7 @@ class AssetDetailPage extends StatelessWidget {
                             topText: Text(entry.key.name),
                             bottomText: Text('Portfolio: ${entry.value}%'),
                             image: sl<ImageService>().getImage(entry.key.imageUri),
-                            onTapped: () => GoRouter.of(context).go('/client', extra: entry.key),
+                            onTapped: () => GoRouter.of(context).go('/client/${entry.key.uuid}', extra: entry.key),
                           ),
                       ],
                     ),

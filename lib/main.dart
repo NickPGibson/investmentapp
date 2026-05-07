@@ -26,11 +26,13 @@ class InvestmentApp extends StatelessWidget {
         builder: (context, state) => const HomePage(),
         routes: [
           GoRoute(
-            path: 'client',
+            path: 'client/:uuid',
+            redirect: (context, state) => state.extra is! Client ? '/' : null,
             builder: (context, state) => ClientDetailPage(state.extra as Client),
           ),
           GoRoute(
-            path: 'asset',
+            path: 'asset/:isin',
+            redirect: (context, state) => state.extra is! Asset ? '/' : null,
             builder: (context, state) => AssetDetailPage(state.extra as Asset),
           ),
         ],
