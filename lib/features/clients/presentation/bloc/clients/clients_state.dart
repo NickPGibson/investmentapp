@@ -20,3 +20,7 @@ class ClientsLoaded extends ClientsState {
   @override
   List<Object?> get props => [clients];
 }
+
+class ClientsError extends ClientsState {
+  const ClientsError();
+}

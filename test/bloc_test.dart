@@ -11,6 +11,7 @@ import 'package:investmentapp/features/clients/domain/usecases/get_all_clients_u
 import 'package:investmentapp/features/clients/domain/usecases/get_assets_of_client_use_case.dart';
 import 'package:investmentapp/features/clients/presentation/bloc/client_detail/client_detail_bloc.dart';
 import 'package:investmentapp/features/clients/presentation/bloc/clients/clients_bloc.dart';
+import 'package:investmentapp/shared/domain/portfolio_exception.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockGetAllClientsUseCase extends Mock implements GetAllClientsUseCase {}
@@ -104,6 +105,38 @@ void main() {
         AssetDetailLoaded({tom: 35}),
       ],
       verify: (_) => verify(() => mockGetClientsOfAsset('2')).called(1),
+    );
+
+    blocTest(
+      'ClientsBloc emits loading then error on PortfolioException',
+      setUp: () => when(() => mockGetAllClients()).thenThrow(const PortfolioException()),
+      build: () => ClientsBloc(mockGetAllClients),
+      act: (bloc) => bloc.add(const ClientsFetchRequested()),
+      expect: () => [const ClientsLoading(), const ClientsError()],
+    );
+
+    blocTest(
+      'ClientDetailBloc emits loading then error on PortfolioException',
+      setUp: () => when(() => mockGetAssetsOfClient('2')).thenThrow(const PortfolioException()),
+      build: () => ClientDetailBloc(mockGetAssetsOfClient),
+      act: (bloc) => bloc.add(const ClientDetailFetchRequested('2')),
+      expect: () => [const ClientDetailLoading(), const ClientDetailError()],
+    );
+
+    blocTest(
+      'AssetsBloc emits loading then error on PortfolioException',
+      setUp: () => when(() => mockGetAllAssets()).thenThrow(const PortfolioException()),
+      build: () => AssetsBloc(mockGetAllAssets),
+      act: (bloc) => bloc.add(const AssetsFetchRequested()),
+      expect: () => [const AssetsLoading(), const AssetsError()],
+    );
+
+    blocTest(
+      'AssetDetailBloc emits loading then error on PortfolioException',
+      setUp: () => when(() => mockGetClientsOfAsset('2')).thenThrow(const PortfolioException()),
+      build: () => AssetDetailBloc(mockGetClientsOfAsset),
+      act: (bloc) => bloc.add(const AssetDetailFetchRequested('2')),
+      expect: () => [const AssetDetailLoading(), const AssetDetailError()],
     );
   });
 }

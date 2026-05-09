@@ -13,6 +13,7 @@ import 'package:investmentapp/features/clients/presentation/bloc/client_detail/c
 import 'package:investmentapp/features/clients/presentation/bloc/clients/clients_bloc.dart';
 import 'package:investmentapp/shared/data/datasources/portfolio_local_data_source.dart';
 import 'package:investmentapp/shared/services/image_service.dart';
+import 'package:investmentapp/shared/services/logger.dart';
 
 final sl = GetIt.instance;
 
@@ -22,10 +23,11 @@ Future<void> init() async {
   await dataSource.initialise();
   sl.registerSingleton<PortfolioLocalDataSource>(dataSource);
   sl.registerLazySingleton<ImageService>(() => AssetImageService());
+  sl.registerLazySingleton<Logger>(() => DebugLogger());
 
   // Repositories
-  sl.registerLazySingleton<ClientRepository>(() => ClientRepositoryImpl(sl()));
-  sl.registerLazySingleton<AssetRepository>(() => AssetRepositoryImpl(sl()));
+  sl.registerLazySingleton<ClientRepository>(() => ClientRepositoryImpl(sl(), sl()));
+  sl.registerLazySingleton<AssetRepository>(() => AssetRepositoryImpl(sl(), sl()));
 
   // Use cases
   sl.registerLazySingleton(() => GetAllClientsUseCase(sl()));

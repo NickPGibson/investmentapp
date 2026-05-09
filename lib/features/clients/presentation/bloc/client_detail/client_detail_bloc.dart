@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:investmentapp/features/assets/domain/entities/asset.dart';
 import 'package:investmentapp/features/clients/domain/usecases/get_assets_of_client_use_case.dart';
+import 'package:investmentapp/shared/domain/portfolio_exception.dart';
 
 part 'client_detail_event.dart';
 part 'client_detail_state.dart';
@@ -18,7 +19,11 @@ class ClientDetailBloc extends Bloc<ClientDetailEvent, ClientDetailState> {
     Emitter<ClientDetailState> emit,
   ) async {
     emit(const ClientDetailLoading());
-    final assets = await _getAssetsOfClientUseCase(event.clientUuid);
-    emit(ClientDetailLoaded(assets));
+    try {
+      final assets = await _getAssetsOfClientUseCase(event.clientUuid);
+      emit(ClientDetailLoaded(assets));
+    } on PortfolioException {
+      emit(const ClientDetailError());
+    }
   }
 }

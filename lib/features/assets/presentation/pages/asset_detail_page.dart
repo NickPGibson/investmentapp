@@ -22,17 +22,16 @@ class AssetDetailPage extends StatelessWidget {
       child: Builder(
         builder: (context) => BlocBuilder<AssetDetailBloc, AssetDetailState>(
           builder: (context, state) {
-            switch (state) {
-              case AssetDetailInitial():
-                return const SizedBox.shrink();
-              case AssetDetailLoading():
-                return const CircularProgressIndicator();
-              case AssetDetailLoaded():
-                return Scaffold(
-                  appBar: AppBar(
-                    title: const Text('Asset'),
-                  ),
-                  body: InvestNestPadding(
+            return Scaffold(
+              appBar: AppBar(
+                title: const Text('Asset'),
+              ),
+              body: SafeArea(
+                child: switch (state) {
+                  AssetDetailInitial() => const SizedBox.shrink(),
+                  AssetDetailLoading() => const Center(child: CircularProgressIndicator()),
+                  AssetDetailError() => const Center(child: Text('Something went wrong')),
+                  AssetDetailLoaded(:final clients) => InvestNestPadding(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
@@ -50,18 +49,19 @@ class AssetDetailPage extends StatelessWidget {
                           ),
                         ),
                         const Heading(text: 'Clients'),
-                        for (final entry in state.clients.entries)
+                        for (final entry in clients.entries)
                           InfoCard(
                             topText: Text(entry.key.name),
                             bottomText: Text('Portfolio: ${entry.value}%'),
                             image: sl<ImageService>().getImage(entry.key.imageUri),
-                            onTapped: () => GoRouter.of(context).go('/client', extra: entry.key),
+                            onTapped: () => GoRouter.of(context).go('/client/${entry.key.uuid}', extra: entry.key),
                           ),
                       ],
                     ),
                   ),
-                );
-            }
+                },
+              ),
+            );
           },
         ),
       ),

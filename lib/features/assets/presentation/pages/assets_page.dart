@@ -21,6 +21,8 @@ class AssetsPage extends StatelessWidget {
                 return const SizedBox.shrink();
               case AssetsLoading():
                 return const CircularProgressIndicator();
+              case AssetsError():
+                return const Center(child: Text('Something went wrong'));
               case AssetsLoaded():
                 final assets = state.assets;
                 return ListView.builder(
@@ -30,7 +32,7 @@ class AssetsPage extends StatelessWidget {
                     return InfoCard(
                       image: sl<ImageService>().getImage(asset.imageUri),
                       topText: Text(asset.name),
-                      onTapped: () => GoRouter.of(context).go('/asset', extra: asset),
+                      onTapped: () => GoRouter.of(context).go('/asset/${asset.isin}', extra: asset),
                     );
                   },
                 );

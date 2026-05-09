@@ -22,6 +22,8 @@ class ClientsPage extends StatelessWidget {
                 return const SizedBox.shrink();
               case ClientsLoading():
                 return const CircularProgressIndicator();
+              case ClientsError():
+                return const Center(child: Text('Something went wrong'));
               case ClientsLoaded():
                 final clients = state.clients;
                 return ListView.builder(
@@ -32,7 +34,7 @@ class ClientsPage extends StatelessWidget {
                       image: sl<ImageService>().getImage(client.imageUri),
                       topText: Text(client.name),
                       bottomText: Text(toSterling(client.portfolioValue)),
-                      onTapped: () => GoRouter.of(context).go('/client', extra: client),
+                      onTapped: () => GoRouter.of(context).go('/client/${client.uuid}', extra: client),
                     );
                   },
                 );
