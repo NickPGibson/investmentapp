@@ -24,26 +24,32 @@ class InfoCard extends StatelessWidget {
   Widget build(BuildContext context) => RoundedCard(
     onTapped: onTapped,
     isGrey: isGrey,
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Expanded(child: Row(
-          children: [
-            CircleAvatar(backgroundImage: image, radius: 20,),
-            Expanded(child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  topText,
-                  if (bottomText != null) bottomText!
-                ]
+    child: MergeSemantics(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Expanded(child: Row(
+            children: [
+              ExcludeSemantics(
+                child: CircleAvatar(backgroundImage: image, radius: 20,),
               ),
-            )),
-          ],
-        )),
-        if (onTapped != null && showArrow) const Icon(Icons.arrow_forward_ios_outlined)
-      ],
+              Expanded(child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    topText,
+                    if (bottomText != null) bottomText!
+                  ]
+                ),
+              )),
+            ],
+          )),
+          if (onTapped != null && showArrow) const ExcludeSemantics(
+            child: Icon(Icons.arrow_forward_ios_outlined),
+          )
+        ],
+      ),
     )
   );
 }

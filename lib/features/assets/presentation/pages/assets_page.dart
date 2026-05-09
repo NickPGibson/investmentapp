@@ -20,9 +20,19 @@ class AssetsPage extends StatelessWidget {
               case AssetsInitial():
                 return const SizedBox.shrink();
               case AssetsLoading():
-                return const CircularProgressIndicator();
+                return Semantics(
+                  liveRegion: true,
+                  label: 'Loading',
+                  child: const CircularProgressIndicator(),
+                );
               case AssetsError():
-                return const Center(child: Text('Something went wrong'));
+                return Center(
+                  child: Semantics(
+                    liveRegion: true,
+                    label: 'Failed to load. Something went wrong.',
+                    child: const Text('Something went wrong'),
+                  ),
+                );
               case AssetsLoaded():
                 final assets = state.assets;
                 return ListView.builder(

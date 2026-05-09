@@ -21,9 +21,19 @@ class ClientsPage extends StatelessWidget {
               case ClientsInitial():
                 return const SizedBox.shrink();
               case ClientsLoading():
-                return const CircularProgressIndicator();
+                return Semantics(
+                  liveRegion: true,
+                  label: 'Loading',
+                  child: const CircularProgressIndicator(),
+                );
               case ClientsError():
-                return const Center(child: Text('Something went wrong'));
+                return Center(
+                  child: Semantics(
+                    liveRegion: true,
+                    label: 'Failed to load. Something went wrong.',
+                    child: const Text('Something went wrong'),
+                  ),
+                );
               case ClientsLoaded():
                 final clients = state.clients;
                 return ListView.builder(

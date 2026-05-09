@@ -39,8 +39,20 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
               body: SafeArea(
                 child: switch (state) {
                   ClientDetailInitial() => const SizedBox.shrink(),
-                  ClientDetailLoading() => const Center(child: CircularProgressIndicator()),
-                  ClientDetailError() => const Center(child: Text('Something went wrong')),
+                  ClientDetailLoading() => Center(
+                    child: Semantics(
+                      liveRegion: true,
+                      label: 'Loading',
+                      child: const CircularProgressIndicator(),
+                    ),
+                  ),
+                  ClientDetailError() => Center(
+                    child: Semantics(
+                      liveRegion: true,
+                      label: 'Failed to load. Something went wrong.',
+                      child: const Text('Something went wrong'),
+                    ),
+                  ),
                   ClientDetailLoaded(:final assets) => SingleChildScrollView(
                     child: InvestNestPadding(
                       child: Column(
@@ -60,43 +72,48 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
                             ),
                           ),
                           const Heading(text: 'Investment Breakdown'),
-                          SizedBox(
-                            height: 250,
-                            child: RoundedCard(
-                              child: PieChart(
-                                PieChartData(
-                                  pieTouchData: PieTouchData(
-                                    touchCallback: (event, response) {
-                                      if (event is FlTapUpEvent) {
-                                        final index = response?.touchedSection?.touchedSectionIndex;
-                                        setState(() {
-                                          _setTouchedIndex(index);
-                                        });
-                                      }
-                                    },
+                          ExcludeSemantics(
+                            child: SizedBox(
+                              height: 250,
+                              child: RoundedCard(
+                                child: PieChart(
+                                  PieChartData(
+                                    pieTouchData: PieTouchData(
+                                      touchCallback: (event, response) {
+                                        if (event is FlTapUpEvent) {
+                                          final index = response?.touchedSection?.touchedSectionIndex;
+                                          setState(() {
+                                            _setTouchedIndex(index);
+                                          });
+                                        }
+                                      },
+                                    ),
+                                    sectionsSpace: 10,
+                                    centerSpaceRadius: 50,
+                                    sections: _getSections(assets),
                                   ),
-                                  sectionsSpace: 10,
-                                  centerSpaceRadius: 50,
-                                  sections: _getSections(assets),
                                 ),
                               ),
                             ),
                           ),
                           for (var (index, investment) in assets.entries.indexed)
-                            InfoCard(
-                              topText: Text(investment.key.name),
-                              bottomText: Text(
-                                '${investment.value.toString()}%',
-                                style: const TextStyle(fontWeight: FontWeight.bold),
+                            Semantics(
+                              selected: index == _touchedIndex,
+                              child: InfoCard(
+                                topText: Text(investment.key.name),
+                                bottomText: Text(
+                                  '${investment.value.toString()}%',
+                                  style: const TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                image: sl<ImageService>().getImage(investment.key.imageUri),
+                                isGrey: _touchedIndex != null && _touchedIndex != -1 && index != _touchedIndex,
+                                onTapped: () {
+                                  setState(() {
+                                    _setTouchedIndex(index);
+                                  });
+                                },
+                                showArrow: false,
                               ),
-                              image: sl<ImageService>().getImage(investment.key.imageUri),
-                              isGrey: _touchedIndex != null && _touchedIndex != -1 && index != _touchedIndex,
-                              onTapped: () {
-                                setState(() {
-                                  _setTouchedIndex(index);
-                                });
-                              },
-                              showArrow: false,
                             ),
                         ],
                       ),
