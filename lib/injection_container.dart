@@ -12,6 +12,7 @@ import 'package:investmentapp/features/clients/domain/usecases/get_assets_of_cli
 import 'package:investmentapp/features/clients/presentation/bloc/client_detail/client_detail_bloc.dart';
 import 'package:investmentapp/features/clients/presentation/bloc/clients/clients_bloc.dart';
 import 'package:investmentapp/shared/data/datasources/portfolio_local_data_source.dart';
+import 'package:investmentapp/shared/data/datasources/seed_data_provider.dart';
 import 'package:investmentapp/shared/services/image_service.dart';
 import 'package:investmentapp/shared/services/logger.dart';
 
@@ -19,7 +20,8 @@ final sl = GetIt.instance;
 
 Future<void> init() async {
   // Infrastructure
-  final dataSource = PortfolioLocalDataSourceImpl();
+  sl.registerLazySingleton<SeedDataProvider>(() => PortfolioSeedDataProvider());
+  final dataSource = PortfolioLocalDataSourceImpl(sl());
   await dataSource.initialise();
   sl.registerSingleton<PortfolioLocalDataSource>(dataSource);
   sl.registerLazySingleton<ImageService>(() => AssetImageService());
