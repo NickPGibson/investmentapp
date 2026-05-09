@@ -1,204 +1,109 @@
-
-
-
 import 'package:bloc_test/bloc_test.dart';
 import 'package:decimal/decimal.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:investmentapp/pages/asset/asset_bloc.dart';
-import 'package:investmentapp/pages/assets/assets_bloc.dart';
-import 'package:investmentapp/pages/client/client_bloc.dart';
-import 'package:investmentapp/pages/clients/clients_bloc.dart';
-import 'package:investmentapp/repository/models/asset.dart';
-import 'package:investmentapp/repository/models/client.dart';
-import 'package:investmentapp/repository/repository.dart';
+import 'package:investmentapp/features/assets/domain/entities/asset.dart';
+import 'package:investmentapp/features/assets/domain/usecases/get_all_assets_use_case.dart';
+import 'package:investmentapp/features/assets/domain/usecases/get_clients_of_asset_use_case.dart';
+import 'package:investmentapp/features/assets/presentation/bloc/asset_detail/asset_detail_bloc.dart';
+import 'package:investmentapp/features/assets/presentation/bloc/assets/assets_bloc.dart';
+import 'package:investmentapp/features/clients/domain/entities/client.dart';
+import 'package:investmentapp/features/clients/domain/usecases/get_all_clients_use_case.dart';
+import 'package:investmentapp/features/clients/domain/usecases/get_assets_of_client_use_case.dart';
+import 'package:investmentapp/features/clients/presentation/bloc/client_detail/client_detail_bloc.dart';
+import 'package:investmentapp/features/clients/presentation/bloc/clients/clients_bloc.dart';
 import 'package:mocktail/mocktail.dart';
 
-class MockRepository extends Mock implements Repository {}
+class MockGetAllClientsUseCase extends Mock implements GetAllClientsUseCase {}
+
+class MockGetAssetsOfClientUseCase extends Mock implements GetAssetsOfClientUseCase {}
+
+class MockGetAllAssetsUseCase extends Mock implements GetAllAssetsUseCase {}
+
+class MockGetClientsOfAssetUseCase extends Mock implements GetClientsOfAssetUseCase {}
 
 void main() {
-  group('CounterBloc', () {
+  group('BLoC tests', () {
+    final mockGetAllClients = MockGetAllClientsUseCase();
+    final mockGetAssetsOfClient = MockGetAssetsOfClientUseCase();
+    final mockGetAllAssets = MockGetAllAssetsUseCase();
+    final mockGetClientsOfAsset = MockGetClientsOfAssetUseCase();
 
-    final repository = MockRepository();
+    final james = Client(
+      uuid: '1',
+      name: 'James',
+      portfolioValue: Decimal.parse('20000'),
+      imageUri: 'assets/images/blackrock.png',
+      riskStrategy: 'High',
+    );
+    final tom = Client(
+      uuid: '2',
+      name: 'Tom',
+      portfolioValue: Decimal.parse('30500'),
+      imageUri: 'assets/images/blackrock.png',
+      riskStrategy: 'Low',
+    );
+    const xyz = Asset(
+      isin: 'XYZ',
+      name: 'XYZ',
+      imageUri: 'assets/images/blackrock.png',
+      riskRating: 'Low',
+    );
+    const abc = Asset(
+      isin: 'ABC',
+      name: 'ABC',
+      imageUri: 'assets/images/blackrock.png',
+      riskRating: 'Medium',
+    );
 
     setUp(() {
-
-      when(() => repository.initialise()).thenAnswer((_) async {});
-
-      when(() => repository.getAssetsOf(clientUuid: "2")).thenAnswer((_) async =>
-      {
-        Asset(
-            isin: 'XYZ',
-            name: "XYZ",
-            imageUri: "assets/images/blackrock.png",
-            riskRating: "Low"
-        ) : 75,
-        Asset(
-            isin: 'ABC',
-            name: "ABC",
-            imageUri: "assets/images/blackrock.png",
-            riskRating: "Medium"
-        ) : 25,
-      });
-
-      when(() => repository.getAllAssets()).thenAnswer((_) async => [
-        Asset(
-            isin: 'XYZ',
-            name: "XYZ",
-            imageUri: "assets/images/blackrock.png",
-            riskRating: "Low"
-        ),
-        Asset(
-            isin: 'ABC',
-            name: "ABC",
-            imageUri: "assets/images/blackrock.png",
-            riskRating: "Medium"
-        )
-      ]);
-
-      when(() => repository.getClientsOf(assetIsin: "2")).thenAnswer((_) async => {
-        Client(
-          uuid: '2',
-          name: "Tom",
-          portfolioValue: Decimal.parse("30500"),
-          imageUri: "assets/images/blackrock.png",
-          riskStrategy: "Low",
-        ): 35
-      });
-
-      when(() => repository.getAllClients()).thenAnswer((_) async => [
-        Client(
-          uuid: '1',
-          name: "James",
-          portfolioValue: Decimal.parse("20000"),
-          imageUri: "assets/images/blackrock.png",
-          riskStrategy: "High",
-        ),
-        Client(
-          uuid: '2',
-          name: "Tom",
-          portfolioValue: Decimal.parse("30500"),
-          imageUri: "assets/images/blackrock.png",
-          riskStrategy: "Low",
-        )
-      ]);
-
-
+      when(() => mockGetAllClients()).thenAnswer((_) async => [james, tom]);
+      when(() => mockGetAssetsOfClient('2')).thenAnswer((_) async => {xyz: 75, abc: 25});
+      when(() => mockGetAllAssets()).thenAnswer((_) async => [xyz, abc]);
+      when(() => mockGetClientsOfAsset('2')).thenAnswer((_) async => {tom: 35});
     });
 
-
     blocTest(
-      'AssetBloc',
-      build: () => AssetBloc(repository),
-      act: (bloc) {
-        bloc.add(FetchClients("2"));
-      },
+      'ClientsBloc emits loading then loaded',
+      build: () => ClientsBloc(mockGetAllClients),
+      act: (bloc) => bloc.add(const ClientsFetchRequested()),
       expect: () => [
-        AssetLoading(),
-        AssetLoaded({
-          Client(
-            uuid: '2',
-            name: "Tom",
-            portfolioValue: Decimal.parse("30500"),
-            imageUri: "assets/images/blackrock.png",
-            riskStrategy: "Low",
-          ): 35
-        })
+        const ClientsLoading(),
+        ClientsLoaded([james, tom]),
       ],
-      verify: (_) {
-        verify(() => repository.getClientsOf(assetIsin: "2")).called(1);
-      }
+      verify: (_) => verify(() => mockGetAllClients()).called(1),
     );
 
     blocTest(
-      'AssetsBloc',
-      build: () => AssetsBloc(repository),
-      act: (bloc) {
-        bloc.add(FetchAllAssets());
-      },
+      'ClientDetailBloc emits loading then loaded',
+      build: () => ClientDetailBloc(mockGetAssetsOfClient),
+      act: (bloc) => bloc.add(const ClientDetailFetchRequested('2')),
       expect: () => [
-        AssetsLoading(),
-        AssetsLoaded([
-          Asset(
-            isin: 'XYZ',
-            name: "XYZ",
-            imageUri: "assets/images/blackrock.png",
-            riskRating: "Low"
-          ),
-          Asset(
-            isin: 'ABC',
-            name: "ABC",
-            imageUri: "assets/images/blackrock.png",
-            riskRating: "Medium"
-           )]
-        )
+        const ClientDetailLoading(),
+        ClientDetailLoaded({xyz: 75, abc: 25}),
       ],
-      verify: (_) {
-        verify(() => repository.getAllAssets()).called(1);
-      }
+      verify: (_) => verify(() => mockGetAssetsOfClient('2')).called(1),
     );
 
     blocTest(
-      'ClientBloc',
-      build: () => ClientBloc(repository),
-      act: (bloc) {
-        bloc.add(FetchAssets(client: Client(
-          uuid: '2',
-          name: "Tom",
-          portfolioValue: Decimal.parse("30500"),
-          imageUri: "assets/images/blackrock.png",
-          riskStrategy: "Low",
-        )));
-      },
+      'AssetsBloc emits loading then loaded',
+      build: () => AssetsBloc(mockGetAllAssets),
+      act: (bloc) => bloc.add(const AssetsFetchRequested()),
       expect: () => [
-        ClientLoading(),
-        ClientReady(assets: {
-          Asset(
-              isin: 'XYZ',
-              name: "XYZ",
-              imageUri: "assets/images/blackrock.png",
-              riskRating: "Low"
-          ) : 75,
-          Asset(
-              isin: 'ABC',
-              name: "ABC",
-              imageUri: "assets/images/blackrock.png",
-              riskRating: "Medium"
-          ) : 25,
-        })
+        const AssetsLoading(),
+        AssetsLoaded([xyz, abc]),
       ],
-      verify: (_) {
-        verify(() => repository.getAssetsOf(clientUuid: "2")).called(1);
-      }
+      verify: (_) => verify(() => mockGetAllAssets()).called(1),
     );
 
     blocTest(
-      'ClientsBloc',
-      build: () => ClientsBloc(repository),
-      act: (bloc) {
-        bloc.add(FetchAllClients());
-      },
+      'AssetDetailBloc emits loading then loaded',
+      build: () => AssetDetailBloc(mockGetClientsOfAsset),
+      act: (bloc) => bloc.add(const AssetDetailFetchRequested('2')),
       expect: () => [
-        ClientsLoading(),
-        ClientsLoaded([
-          Client(
-            uuid: '1',
-            name: "James",
-            portfolioValue: Decimal.parse("20000"),
-            imageUri: "assets/images/blackrock.png",
-            riskStrategy: "High",
-          ),
-          Client(
-            uuid: '2',
-            name: "Tom",
-            portfolioValue: Decimal.parse("30500"),
-            imageUri: "assets/images/blackrock.png",
-            riskStrategy: "Low",
-          )
-        ])
+        const AssetDetailLoading(),
+        AssetDetailLoaded({tom: 35}),
       ],
-      verify: (_) {
-        verify(() => repository.getAllClients()).called(1);
-      }
+      verify: (_) => verify(() => mockGetClientsOfAsset('2')).called(1),
     );
   });
 }

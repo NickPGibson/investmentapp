@@ -2,37 +2,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
-import 'package:investmentapp/pages/asset/asset_ui.dart';
-import 'package:investmentapp/pages/client/client_ui.dart';
-import 'package:investmentapp/pages/home/home_ui.dart';
-import 'package:investmentapp/repository/image_repository.dart';
-import 'package:investmentapp/repository/models/asset.dart';
-import 'package:investmentapp/repository/models/client.dart';
-import 'package:investmentapp/repository/repository.dart';
-import 'package:provider/provider.dart';
+import 'package:investmentapp/features/assets/domain/entities/asset.dart';
+import 'package:investmentapp/features/assets/presentation/pages/asset_detail_page.dart';
+import 'package:investmentapp/features/clients/domain/entities/client.dart';
+import 'package:investmentapp/features/clients/presentation/pages/client_detail_page.dart';
+import 'package:investmentapp/features/home/presentation/pages/home_page.dart';
+import 'package:investmentapp/injection_container.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(const InvestNestApp());
+  await init();
+  runApp(const InvestmentApp());
 }
-
-class InvestNestApp extends StatelessWidget {
-  const InvestNestApp({super.key});
-
-  @override
-  Widget build(BuildContext context) => MultiProvider(
-    providers: [
-      Provider<Repository>(
-        create: (context) => Repository(),
-      ),
-      Provider<ImageRepository>(
-        create: (context) => ImageRepository(),
-      ),
-    ],
-    child: InvestmentApp()
-  );
-}
-
 
 class InvestmentApp extends StatelessWidget {
   const InvestmentApp({super.key});
@@ -42,19 +23,19 @@ class InvestmentApp extends StatelessWidget {
     routes: [
       GoRoute(
         path: '/',
-        builder: (context, state) => const HomeUi(),
+        builder: (context, state) => const HomePage(),
         routes: [
           GoRoute(
             path: 'client',
-            builder: (context, state) => ClientUi(state.extra as Client),
+            builder: (context, state) => ClientDetailPage(state.extra as Client),
           ),
           GoRoute(
             path: 'asset',
-            builder: (context, state) => AssetUi(state.extra as Asset),
+            builder: (context, state) => AssetDetailPage(state.extra as Asset),
           ),
-        ]
-      )
-    ]
+        ],
+      ),
+    ],
   );
 
   @override
@@ -72,12 +53,12 @@ class InvestmentApp extends StatelessWidget {
           indicatorColor: Colors.green.shade400,
           overlayColor: WidgetStateProperty.all(Colors.transparent),
           iconTheme: WidgetStateProperty.all(
-            IconThemeData(
+            const IconThemeData(
               color: Colors.white,
             ),
           ),
           labelTextStyle: WidgetStateProperty.all(
-            TextStyle(
+            const TextStyle(
               color: Colors.white,
               fontFamily: 'Quicksand',
             ),
