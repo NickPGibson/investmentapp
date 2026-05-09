@@ -27,6 +27,8 @@ class AssetDetailPage extends StatelessWidget {
                 return const SizedBox.shrink();
               case AssetDetailLoading():
                 return const CircularProgressIndicator();
+              case AssetDetailError():
+                return const Center(child: Text('Something went wrong'));
               case AssetDetailLoaded():
                 return Scaffold(
                   appBar: AppBar(

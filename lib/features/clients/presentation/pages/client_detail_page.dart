@@ -37,6 +37,8 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
                 return const SizedBox.shrink();
               case ClientDetailLoading():
                 return const CircularProgressIndicator();
+              case ClientDetailError():
+                return const Center(child: Text('Something went wrong'));
               case ClientDetailLoaded():
                 return Scaffold(
                   appBar: AppBar(

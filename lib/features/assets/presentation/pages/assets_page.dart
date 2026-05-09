@@ -21,6 +21,8 @@ class AssetsPage extends StatelessWidget {
                 return const SizedBox.shrink();
               case AssetsLoading():
                 return const CircularProgressIndicator();
+              case AssetsError():
+                return const Center(child: Text('Something went wrong'));
               case AssetsLoaded():
                 final assets = state.assets;
                 return ListView.builder(

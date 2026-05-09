@@ -20,3 +20,7 @@ class ClientDetailLoaded extends ClientDetailState {
   @override
   List<Object?> get props => [assets];
 }
+
+class ClientDetailError extends ClientDetailState {
+  const ClientDetailError();
+}

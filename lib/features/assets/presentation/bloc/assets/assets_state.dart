@@ -20,3 +20,7 @@ class AssetsLoaded extends AssetsState {
   @override
   List<Object?> get props => [assets];
 }
+
+class AssetsError extends AssetsState {
+  const AssetsError();
+}

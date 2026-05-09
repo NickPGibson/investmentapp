@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:investmentapp/features/assets/domain/entities/asset.dart';
 import 'package:investmentapp/features/assets/domain/usecases/get_all_assets_use_case.dart';
+import 'package:investmentapp/shared/domain/portfolio_exception.dart';
 
 part 'assets_event.dart';
 part 'assets_state.dart';
@@ -18,7 +19,11 @@ class AssetsBloc extends Bloc<AssetsEvent, AssetsState> {
     Emitter<AssetsState> emit,
   ) async {
     emit(const AssetsLoading());
-    final assets = await _getAllAssetsUseCase();
-    emit(AssetsLoaded(assets));
+    try {
+      final assets = await _getAllAssetsUseCase();
+      emit(AssetsLoaded(assets));
+    } on PortfolioException {
+      emit(const AssetsError());
+    }
   }
 }

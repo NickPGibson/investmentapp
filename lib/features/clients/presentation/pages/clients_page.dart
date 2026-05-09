@@ -22,6 +22,8 @@ class ClientsPage extends StatelessWidget {
                 return const SizedBox.shrink();
               case ClientsLoading():
                 return const CircularProgressIndicator();
+              case ClientsError():
+                return const Center(child: Text('Something went wrong'));
               case ClientsLoaded():
                 final clients = state.clients;
                 return ListView.builder(
