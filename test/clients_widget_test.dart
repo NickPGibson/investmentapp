@@ -18,9 +18,12 @@ import 'package:investmentapp/injection_container.dart';
 import 'package:investmentapp/main.dart';
 import 'package:investmentapp/shared/data/datasources/portfolio_local_data_source.dart';
 import 'package:investmentapp/shared/services/image_service.dart';
+import 'package:investmentapp/shared/services/logger.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockPortfolioLocalDataSource extends Mock implements PortfolioLocalDataSource {}
+
+class MockLogger extends Mock implements Logger {}
 
 void main() {
   final james = ClientModel(
@@ -58,8 +61,9 @@ void main() {
     when(() => mockDataSource.getAssetsOfClient('2')).thenAnswer((_) async => {xyz: 75, abc: 25});
     sl.registerSingleton<PortfolioLocalDataSource>(mockDataSource);
     sl.registerLazySingleton<ImageService>(() => AssetImageService());
-    sl.registerLazySingleton<ClientRepository>(() => ClientRepositoryImpl(sl()));
-    sl.registerLazySingleton<AssetRepository>(() => AssetRepositoryImpl(sl()));
+    sl.registerLazySingleton<Logger>(() => MockLogger());
+    sl.registerLazySingleton<ClientRepository>(() => ClientRepositoryImpl(sl(), sl()));
+    sl.registerLazySingleton<AssetRepository>(() => AssetRepositoryImpl(sl(), sl()));
     sl.registerLazySingleton(() => GetAllClientsUseCase(sl()));
     sl.registerLazySingleton(() => GetAssetsOfClientUseCase(sl()));
     sl.registerLazySingleton(() => GetAllAssetsUseCase(sl()));

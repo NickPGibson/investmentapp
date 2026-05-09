@@ -32,83 +32,79 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
       child: Builder(
         builder: (context) => BlocBuilder<ClientDetailBloc, ClientDetailState>(
           builder: (context, state) {
-            switch (state) {
-              case ClientDetailInitial():
-                return const SizedBox.shrink();
-              case ClientDetailLoading():
-                return const CircularProgressIndicator();
-              case ClientDetailError():
-                return const Center(child: Text('Something went wrong'));
-              case ClientDetailLoaded():
-                return Scaffold(
-                  appBar: AppBar(
-                    title: Text(widget.client.name),
-                  ),
-                  body: SafeArea(
-                    child: SingleChildScrollView(
-                      child: InvestNestPadding(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            const Heading(text: 'Profile'),
-                            RoundedCard(
-                              child: Column(
-                                children: [
-                                  CircleAvatar(
-                                    backgroundImage: sl<ImageService>().getImage(widget.client.imageUri),
-                                    radius: 60,
-                                  ),
-                                  Text('Portfolio Value: ${toSterling(widget.client.portfolioValue)}'),
-                                  Text('Risk Strategy: ${widget.client.riskStrategy}'),
-                                ],
-                              ),
+            return Scaffold(
+              appBar: AppBar(
+                title: Text(widget.client.name),
+              ),
+              body: SafeArea(
+                child: switch (state) {
+                  ClientDetailInitial() => const SizedBox.shrink(),
+                  ClientDetailLoading() => const Center(child: CircularProgressIndicator()),
+                  ClientDetailError() => const Center(child: Text('Something went wrong')),
+                  ClientDetailLoaded(:final assets) => SingleChildScrollView(
+                    child: InvestNestPadding(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          const Heading(text: 'Profile'),
+                          RoundedCard(
+                            child: Column(
+                              children: [
+                                CircleAvatar(
+                                  backgroundImage: sl<ImageService>().getImage(widget.client.imageUri),
+                                  radius: 60,
+                                ),
+                                Text('Portfolio Value: ${toSterling(widget.client.portfolioValue)}'),
+                                Text('Risk Strategy: ${widget.client.riskStrategy}'),
+                              ],
                             ),
-                            const Heading(text: 'Investment Breakdown'),
-                            SizedBox(
-                              height: 250,
-                              child: RoundedCard(
-                                child: PieChart(
-                                  PieChartData(
-                                    pieTouchData: PieTouchData(
-                                      touchCallback: (event, response) {
-                                        if (event is FlTapUpEvent) {
-                                          final index = response?.touchedSection?.touchedSectionIndex;
-                                          setState(() {
-                                            _setTouchedIndex(index);
-                                          });
-                                        }
-                                      },
-                                    ),
-                                    sectionsSpace: 10,
-                                    centerSpaceRadius: 50,
-                                    sections: _getSections(state.assets),
+                          ),
+                          const Heading(text: 'Investment Breakdown'),
+                          SizedBox(
+                            height: 250,
+                            child: RoundedCard(
+                              child: PieChart(
+                                PieChartData(
+                                  pieTouchData: PieTouchData(
+                                    touchCallback: (event, response) {
+                                      if (event is FlTapUpEvent) {
+                                        final index = response?.touchedSection?.touchedSectionIndex;
+                                        setState(() {
+                                          _setTouchedIndex(index);
+                                        });
+                                      }
+                                    },
                                   ),
+                                  sectionsSpace: 10,
+                                  centerSpaceRadius: 50,
+                                  sections: _getSections(assets),
                                 ),
                               ),
                             ),
-                            for (var (index, investment) in state.assets.entries.indexed)
-                              InfoCard(
-                                topText: Text(investment.key.name),
-                                bottomText: Text(
-                                  '${investment.value.toString()}%',
-                                  style: const TextStyle(fontWeight: FontWeight.bold),
-                                ),
-                                image: sl<ImageService>().getImage(investment.key.imageUri),
-                                isGrey: _touchedIndex != null && _touchedIndex != -1 && index != _touchedIndex,
-                                onTapped: () {
-                                  setState(() {
-                                    _setTouchedIndex(index);
-                                  });
-                                },
-                                showArrow: false,
+                          ),
+                          for (var (index, investment) in assets.entries.indexed)
+                            InfoCard(
+                              topText: Text(investment.key.name),
+                              bottomText: Text(
+                                '${investment.value.toString()}%',
+                                style: const TextStyle(fontWeight: FontWeight.bold),
                               ),
-                          ],
-                        ),
+                              image: sl<ImageService>().getImage(investment.key.imageUri),
+                              isGrey: _touchedIndex != null && _touchedIndex != -1 && index != _touchedIndex,
+                              onTapped: () {
+                                setState(() {
+                                  _setTouchedIndex(index);
+                                });
+                              },
+                              showArrow: false,
+                            ),
+                        ],
                       ),
                     ),
                   ),
-                );
-            }
+                },
+              ),
+            );
           },
         ),
       ),

@@ -1,3 +1,5 @@
 class PortfolioException implements Exception {
-  const PortfolioException();
+  final Object? cause;
+  final StackTrace? stackTrace;
+  const PortfolioException({this.cause, this.stackTrace});
 }
