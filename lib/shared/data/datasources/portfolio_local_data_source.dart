@@ -42,7 +42,7 @@ class PortfolioLocalDataSourceImpl implements PortfolioLocalDataSource {
 
   Future<void> _createTablesAndSeed(Database db) async {
     await db.execute('''
-      CREATE TABLE $_clientsTable(
+      CREATE TABLE IF NOT EXISTS $_clientsTable(
         uuid TEXT PRIMARY KEY,
         name TEXT,
         portfolioValue TEXT,
@@ -51,7 +51,7 @@ class PortfolioLocalDataSourceImpl implements PortfolioLocalDataSource {
       )
     ''');
     await db.execute('''
-      CREATE TABLE $_assetsTable(
+      CREATE TABLE IF NOT EXISTS $_assetsTable(
         isin TEXT PRIMARY KEY,
         name TEXT,
         imageUri TEXT,
@@ -59,7 +59,7 @@ class PortfolioLocalDataSourceImpl implements PortfolioLocalDataSource {
       )
     ''');
     await db.execute('''
-      CREATE TABLE $_holdingsTable(
+      CREATE TABLE IF NOT EXISTS $_holdingsTable(
         clientUuid TEXT,
         assetIsin TEXT,
         quantity INTEGER,
@@ -68,8 +68,8 @@ class PortfolioLocalDataSourceImpl implements PortfolioLocalDataSource {
         FOREIGN KEY (assetIsin) REFERENCES $_assetsTable(isin)
       )
     ''');
-    await db.execute('CREATE INDEX holdings_assetIsin_index ON $_holdingsTable(assetIsin)');
-    await db.execute('CREATE INDEX holdings_clientUuid_index ON $_holdingsTable(clientUuid)');
+    await db.execute('CREATE INDEX IF NOT EXISTS holdings_assetIsin_index ON $_holdingsTable(assetIsin)');
+    await db.execute('CREATE INDEX IF NOT EXISTS holdings_clientUuid_index ON $_holdingsTable(clientUuid)');
 
     for (final client in _seedDataProvider.clients) {
       await db.insert(_clientsTable, client.toMap(), conflictAlgorithm: ConflictAlgorithm.replace);
