@@ -24,13 +24,25 @@ class AssetDetailPage extends StatelessWidget {
           builder: (context, state) {
             return Scaffold(
               appBar: AppBar(
-                title: const Text('Asset'),
+                title: Text(asset.name),
               ),
               body: SafeArea(
                 child: switch (state) {
                   AssetDetailInitial() => const SizedBox.shrink(),
-                  AssetDetailLoading() => const Center(child: CircularProgressIndicator()),
-                  AssetDetailError() => const Center(child: Text('Something went wrong')),
+                  AssetDetailLoading() => Center(
+                    child: Semantics(
+                      liveRegion: true,
+                      label: 'Loading',
+                      child: const CircularProgressIndicator(),
+                    ),
+                  ),
+                  AssetDetailError() => Center(
+                    child: Semantics(
+                      liveRegion: true,
+                      label: 'Failed to load. Something went wrong.',
+                      child: const Text('Something went wrong'),
+                    ),
+                  ),
                   AssetDetailLoaded(:final clients) => InvestNestPadding(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,

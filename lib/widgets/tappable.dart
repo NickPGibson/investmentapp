@@ -44,11 +44,16 @@ class _TappableState extends State<Tappable> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTapUp: _onTapUp,
-      onTapDown: _onTapDown,
-      onTapCancel: _onTapCancel,
-      child: widget.builder(widget.onTapped == null ? _defaultElevation : _isTappedDown ? 0.0 : _defaultElevation),
+    return Semantics(
+      button: widget.onTapped != null,
+      enabled: widget.onTapped != null,
+      onTap: widget.onTapped,
+      child: GestureDetector(
+        onTapUp: _onTapUp,
+        onTapDown: _onTapDown,
+        onTapCancel: _onTapCancel,
+        child: widget.builder(widget.onTapped == null ? _defaultElevation : _isTappedDown ? 0.0 : _defaultElevation),
+      ),
     );
   }
 
